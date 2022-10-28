@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: harness-delegate
+  name: harness-delegate-ng
 
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: harness-delegate-cluster-admin
+  name: harness-delegate-ng-cluster-admin
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: harness-delegate
+    namespace: harness-delegate-ng
 roleRef:
   kind: ClusterRole
   name: cluster-admin
@@ -24,7 +24,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: delNamePlaceHolder-proxy
-  namespace: harness-delegate
+  namespace: harness-delegate-ng
 type: Opaque
 data:
   # Enter base64 encoded username and password, if needed
@@ -37,25 +37,19 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    harness.io/app: harness-delegate
-    harness.io/account: tjnjsd
     harness.io/name: delNamePlaceHolder
-  # Name must contain the six letter account identifier: tjnjsd
-  name: delNamePlaceHolder-tjnjsd
-  namespace: harness-delegate
+  name: delNamePlaceHolder
+  namespace: harness-delegate-ng
 spec:
-  replicas: 1
+  replicas: delReplicaPlaceHolder
+  podManagementPolicy: Parallel
   selector:
     matchLabels:
-      harness.io/app: harness-delegate
-      harness.io/account: tjnjsd
       harness.io/name: delNamePlaceHolder
   serviceName: ""
   template:
     metadata:
       labels:
-        harness.io/app: harness-delegate
-        harness.io/account: tjnjsd
         harness.io/name: delNamePlaceHolder
     spec:
       containers:
@@ -66,8 +60,11 @@ spec:
           - containerPort: 8080
         resources:
           limits:
-            cpu: "1"
-            memory: "4Gi"
+            cpu: "0.5"
+            memory: "2048Mi"
+          requests:
+            cpu: "0.5"
+            memory: "2048Mi"
         readinessProbe:
           exec:
             command:
@@ -104,10 +101,14 @@ spec:
               fieldPath: metadata.namespace
         - name: INIT_SCRIPT
           value: ""
-        - name: DELEGATE_PROFILE
-          value: "kFLUOcwiS36PJka6xkyN-Q"
+        - name: DELEGATE_DESCRIPTION
+          value: ""
+        - name: DELEGATE_TAGS
+          value: ""
+        - name: NEXT_GEN
+          value: "true"
         - name: DELEGATE_TOKEN
-          value: b6c02f120cfbe5a26bdda2ab868f7d53
+          value: 42b144a4dfb94534c3ca549505bfdece
         - name: WATCHER_STORAGE_URL
           value: https://qa.harness.io/public/qa/premium/watchers
         - name: WATCHER_CHECK_LOCATION
@@ -168,12 +169,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: delegate-service
-  namespace: harness-delegate
+  namespace: harness-delegate-ng
 spec:
   type: ClusterIP
   selector:
-    harness.io/app: harness-delegate
-    harness.io/account: tjnjsd
     harness.io/name: delNamePlaceHolder
   ports:
     - port: 8080
