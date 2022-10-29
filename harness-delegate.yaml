@@ -104,7 +104,7 @@ spec:
         - name: DELEGATE_DESCRIPTION
           value: ""
         - name: DELEGATE_TAGS
-          value: delegateTagsPlaceholder
+          value: delTagsPlaceholder
         - name: NEXT_GEN
           value: "true"
         - name: DELEGATE_TOKEN
