@@ -86,7 +86,7 @@ spec:
         - name: JAVA_OPTS
           value: "-Xms64M"
         - name: ACCOUNT_ID
-          value: tJn_jSdZRkKyw5oKnx3cew
+          value: delAccountIdPlaceholder
         - name: MANAGER_HOST_AND_PORT
           value: delManagerHostAndPostPlaceholder
         - name: DEPLOY_MODE
@@ -108,7 +108,7 @@ spec:
         - name: NEXT_GEN
           value: "true"
         - name: DELEGATE_TOKEN
-          value: 42b144a4dfb94534c3ca549505bfdece
+          value: delTokenPlaceholder
         - name: WATCHER_STORAGE_URL
           value: https://qa.harness.io/public/qa/premium/watchers
         - name: WATCHER_CHECK_LOCATION
