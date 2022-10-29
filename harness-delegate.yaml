@@ -88,7 +88,7 @@ spec:
         - name: ACCOUNT_ID
           value: tJn_jSdZRkKyw5oKnx3cew
         - name: MANAGER_HOST_AND_PORT
-          value: https://qa.harness.io
+          value: delManagerHostAndPostPlaceholder
         - name: DEPLOY_MODE
           value: KUBERNETES
         - name: DELEGATE_NAME
