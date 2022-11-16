@@ -109,7 +109,7 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: INIT_SCRIPT
-          value: delegate_init_script
+          value: ""
         - name: DELEGATE_DESCRIPTION
           value: ""
         - name: DELEGATE_TAGS
