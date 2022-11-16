@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: delegate_namespace
+  name: delegate_ns
 
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: delegate_namespace-cluster-admin
+  name: delegate_ns-cluster-admin
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: delegate_namespace
+    namespace: delegate_ns
 roleRef:
   kind: ClusterRole
   name: cluster-admin
@@ -24,7 +24,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: delegate_name-account-token
-  namespace: delegate_namespace
+  namespace: delegate_ns
 type: Opaque
 data:
   DELEGATE_TOKEN: "delegate_token"
@@ -40,7 +40,7 @@ metadata:
   labels:
     harness.io/name: delegate_name
   name: delegate_name
-  namespace: delegate_namespace
+  namespace: delegate_ns
 spec:
   replicas: delegate_replica
   selector:
@@ -127,7 +127,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: delegate-service
-  namespace: delegate_namespace
+  namespace: delegate_ns
 spec:
   type: ClusterIP
   selector:
@@ -141,7 +141,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: upgrader-cronjob
-  namespace: delegate_namespace
+  namespace: delegate_ns
 rules:
   - apiGroups: ["batch", "apps", "extensions"]
     resources: ["cronjobs"]
@@ -156,11 +156,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: delegate_name-upgrader-cronjob
-  namespace: delegate_namespace
+  namespace: delegate_ns
 subjects:
   - kind: ServiceAccount
     name: upgrader-cronjob-sa
-    namespace: delegate_namespace
+    namespace: delegate_ns
 roleRef:
   kind: Role
   name: upgrader-cronjob
@@ -172,7 +172,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: upgrader-cronjob-sa
-  namespace: delegate_namespace
+  namespace: delegate_ns
 
 ---
 
@@ -180,7 +180,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: delegate_name-upgrader-token
-  namespace: delegate_namespace
+  namespace: delegate_ns
 type: Opaque
 data:
   UPGRADER_TOKEN: "delegate_token"
@@ -191,13 +191,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: delegate_name-upgrader-config
-  namespace: delegate_namespace
+  namespace: delegate_ns
 data:
   config.yaml: |
     mode: Delegate
     dryRun: false
     workloadName: delegate_name
-    namespace: delegate_namespace
+    namespace: delegate_ns
     containerName: delegate
     delegateConfig:
       accountId: delegate_accountId
@@ -211,7 +211,7 @@ metadata:
   labels:
     harness.io/name: delegate_name-upgrader-job
   name: delegate_name-upgrader-job
-  namespace: delegate_namespace
+  namespace: delegate_ns
 spec:
   schedule: "0 */1 * * *"
   concurrencyPolicy: Forbid
